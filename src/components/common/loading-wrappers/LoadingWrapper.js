@@ -1,7 +1,9 @@
-export const LoadingWrapper = ({ isLoading, isError, children, data }) => {
-  if (isLoading) return <div>Loading...</div>;
+import { CircularProgress, Typography } from "@mui/material";
 
-  if (isError) return <div>Error {isError?.message}</div>;
+export const LoadingWrapper = ({ isLoading, isError, children, data }) => {
+  if (isLoading) return <CircularProgress/>;
+
+  if (isError) return <Typography>Error {isError?.message}</Typography>;
 
   if (data) return children;
 };
