@@ -13,7 +13,7 @@ export const DummyCard = () => {
 };
 const DummyData = ({ data }) => {
   return (
-    <Paper style={{ padding: 10 }} elevation={2}>
+    <Paper style={{ padding: 10 }}>
       <Typography>Name: {data.title}</Typography>
     </Paper>
   );

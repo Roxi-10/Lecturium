@@ -18,27 +18,37 @@ const demoTheme = createTheme({
 const Navigation = [
   {
     kind: "header",
-    title: "Main items"
+    title: "Main items",
   },
   {
     segment: "dashboard",
     title: "Dashboard",
-    icon: <DashboardIcon />
+    icon: <DashboardIcon />,
+    children: [
+      {
+        segment: "dummy-page",
+        title: "Dummy Page",
+      },
+    ],
   },
   {
     segment: "page-2/page4",
-    title: "Page 2",
-    icon: <TimelineIcon />
-  }
+    title: "Another page, will throw 404",
+    icon: <TimelineIcon />,
+  },
 ];
 
 export const DashboardLayoutProvider = ({ children }) => {
   return (
-    <NextAppProvider theme={demoTheme} navigation={Navigation} branding={{
-      logo: <img src="https://mui.com/static/logo.png" alt="MUI logo" />,
-      title: "MUI",
-      homeUrl: "/toolpad/core/introduction"
-    }}>
+    <NextAppProvider
+      theme={demoTheme}
+      navigation={Navigation}
+      branding={{
+        logo: <img src="https://mui.com/static/logo.png" alt="MUI logo" />,
+        title: "MUI",
+        homeUrl: "/dashboard",
+      }}
+    >
       {...children}
     </NextAppProvider>
   );
