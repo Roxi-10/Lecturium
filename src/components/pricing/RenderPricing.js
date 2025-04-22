@@ -17,7 +17,8 @@ export const RenderPricing = ()=>{
 
 const PricingList = ({ data }) => {
   return (
-    <Stack direction="row" spacing={2}>
+    <Stack  direction={{ xs: 'row', sm: 'column' }}
+            spacing={{ xs: 1, sm: 2, md: 4 }}>
       {data.map((priceItem) => (
         <PricingCard key={priceItem.id} priceItem={priceItem} />
       ))}
