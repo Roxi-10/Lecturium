@@ -1,6 +1,11 @@
+import { DashboardButton } from "@/components/views/DashboardButton";
 import { RenderPricing } from "@/components/pricing/RenderPricing";
 
 export default function Home() {
-
-  return <RenderPricing />;
+  return (
+    <div>
+      <DashboardButton />
+      <RenderPricing />
+    </div>
+  );
 }
