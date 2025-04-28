@@ -1,104 +1,106 @@
 import React from 'react';
-import { Button, Container, Typography, Box, Paper } from '@mui/material';
+import { Box, Button, Typography, Card, CardContent } from '@mui/material';
+import Link from 'next/link';
 
-// Stilizare personalizată cu noua paletă
+// Stiluri
 const headerStyle = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '20px 40px',
-    backgroundColor: '#2e3b55',
-    color: '#fff',
+    padding: '10px 20px',
+    backgroundColor: 'transparent',
+    color: '#333',
+    width: '100%',
+    boxSizing: 'border-box',
+    marginBottom: '30px',
 };
 
 const titleStyle = {
-    fontSize: '36px',
+    fontSize: '28px',
     fontWeight: 'bold',
     color: '#ff6f61',
     fontFamily: 'Roboto, sans-serif',
 };
 
-const sloganStyle = {
-    marginTop: '20px',
-    fontSize: '22px',
-    fontWeight: 'bold',
-    color: '#34495e',
-    textAlign: 'center',
-};
-
-const buttonStyle = {
-    backgroundColor: '#16a085',
+const primaryButtonStyle = {
+    backgroundColor: '#2c3e50',
     color: '#fff',
-    fontSize: '16px',
+    fontSize: '14px',
     fontWeight: 'bold',
-    padding: '10px 20px',
-    margin: '10px',
-    borderRadius: '8px',
+    padding: '8px 16px',
+    borderRadius: '6px',
+    textTransform: 'none',
     '&:hover': {
-        backgroundColor: '#1abc9c',
+        backgroundColor: '#34495e',
     },
 };
 
-// Componenta pentru cardul de preț
-const PricingCard = ({ priceItem }) => {
-    return (
-        <Paper sx={{ flex: 1, p: 3, margin: '10px', borderRadius: '10px', textAlign: 'center', backgroundColor: '#ffffff' }}>
-            <Typography variant="h6" sx={{ color: '#2e3b55' }}>{priceItem.title}</Typography>
-            <Typography variant="h4" sx={{ color: '#2e3b55', fontWeight: 'bold' }}>
-                {priceItem.price} {priceItem.currency}
-            </Typography>
-            <Typography variant="body1" sx={{ color: '#2e3b55' }}>
-                {priceItem.description}
-            </Typography>
-            <BuyNowButton priceItem={priceItem} />
-        </Paper>
-    );
-};
-
-const BuyNowButton = ({ priceItem }) => {
-    const buyNowHandler = () => {
-        alert(`Cumpărat: ${priceItem.title}`);
-    };
-
-    return (
-        <Button onClick={buyNowHandler} variant="contained" sx={{ backgroundColor: '#16a085', color: '#fff', mt: 2, '&:hover': { backgroundColor: '#1abc9c' } }}>
-            Buy Now
-        </Button>
-    );
-};
-
 const Home = () => {
-    const priceItems = [
-        { id: 1, title: 'Pachet 1', price: '50', currency: 'RON', description: 'Acces la 10 cărți' },
-        { id: 2, title: 'Pachet 2', price: '90', currency: 'RON', description: 'Acces nelimitat la cărți' },
-    ];
-
     return (
-        <Container>
-            <Box sx={headerStyle}>
-                <Typography sx={titleStyle}>Lecturium</Typography>
-                <Box>
-                    <Button sx={buttonStyle}>Log In</Button>
-                    <Button sx={buttonStyle}>Sign Up</Button>
+        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ flex: 1, padding: '20px' }}>
+                {/* Header */}
+                <Box sx={headerStyle}>
+                    <Typography sx={titleStyle}>Lecturium</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        {/* Butoane de navigare */}
+                        <Link href="/dashboard" passHref>
+                            <Button sx={primaryButtonStyle}>Dashboard</Button>
+                        </Link>
+                        <Link href="/forms/login" passHref>
+                            <Button sx={{ ...primaryButtonStyle, marginLeft: '8px' }}>Login</Button>
+                        </Link>
+                        <Link href="/forms/sign-up" passHref>
+                            <Button sx={{ ...primaryButtonStyle, marginLeft: '8px' }}>Sign Up</Button>
+                        </Link>
+                    </Box>
+                </Box>
+
+                {/* Slogan */}
+                <Typography variant="h4" sx={{ textAlign: 'center' }}>
+                    Lecturium - Descoperă magia cititului!
+                </Typography>
+                <Typography variant="body1" sx={{ textAlign: 'center' }}>
+                    Începe călătoria ta prin lumi fascinante de cărți.
+                </Typography>
+
+                {/* Carduri */}
+                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '30px', gap: '20px', flexWrap: 'wrap' }}>
+                    {[{ title: 'Vezi Prețuri', text: 'Descoperă pachetele de prețuri și ce îți oferă fiecare.', link: '/subscriptions' },
+                        { title: 'Despre Lecturium', text: 'Află mai multe despre Lecturium și misiunea noastră.', link: '/about' },
+                        { title: 'Întrebări Frecvente', text: 'Răspunsuri la întrebările frecvente pe care le ai despre Lecturium.', link: '/faq' }]
+                        .map((item, index) => (
+                            <Card key={index} sx={{ width: '250px', padding: '20px' }}>
+                                <CardContent>
+                                    <Typography variant="h6">{item.title}</Typography>
+                                    <Typography variant="body2" sx={{ marginTop: '10px' }}>{item.text}</Typography>
+                                    <Link href={item.link} passHref>
+                                        <Button sx={{ ...primaryButtonStyle, marginTop: '10px' }} fullWidth>
+                                            {item.title}
+                                        </Button>
+                                    </Link>
+                                </CardContent>
+                            </Card>
+                        ))}
                 </Box>
             </Box>
 
-            <Box sx={sloganStyle}>
-                <Typography variant="h4">Lecturium - Descoperă magia cititului!</Typography>
-                <Typography variant="body1">Începe călătoria ta prin lumi fascinante de cărți.</Typography>
+            {/* Footer */}
+            <Box
+                component="footer"
+                sx={{
+                    textAlign: 'center',
+                    padding: '20px 10px',
+                    fontSize: '14px',
+                    color: '#777',
+                    borderTop: '1px solid #eee',
+                    backgroundColor: 'transparent',
+                }}
+            >
+                <Typography>Contact: contact@lecturium.ro | Telefon: 0800-123-456</Typography>
+                <Typography> Echipa Galbenă - MetaMinds</Typography>
             </Box>
-
-            <Box sx={{ textAlign: 'center', marginTop: '30px' }}>
-                <Button sx={buttonStyle}>Prețuri</Button>
-                <Button sx={buttonStyle}>Informații</Button>
-            </Box>
-
-            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
-                {priceItems.map((priceItem) => (
-                    <PricingCard key={priceItem.id} priceItem={priceItem} />
-                ))}
-            </Box>
-        </Container>
+        </Box>
     );
 };
 
