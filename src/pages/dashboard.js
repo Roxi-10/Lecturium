@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import RoleSelector from './forms/RoleSelector'; // Importăm selectorul de rol
-import {
-    Box, Button, Typography, TextField, Select, MenuItem,
-    FormControl, Card
-} from '@mui/material';
+import RoleSelector from './forms/RoleSelector';
+import { Box, Button, Typography, TextField, Select, MenuItem, FormControl, Card } from '@mui/material';
+import Link from 'next/link';
 
 const primaryButtonStyle = {
     backgroundColor: '#2c3e50',
@@ -35,8 +33,8 @@ const Dashboard = () => {
     const [priceRange, setPriceRange] = useState('');
     const [purchasedBooks, setPurchasedBooks] = useState([]);
     const [showPurchased, setShowPurchased] = useState(false);
-    const [role, setRole] = useState(''); // Stare pentru rolul selectat
-    const [subscriptions, setSubscriptions] = useState([ // Exemplu de abonamente pentru admin
+    const [role, setRole] = useState('');
+    const [subscriptions, setSubscriptions] = useState([
         { user: 'John Doe', subscriptionType: 'Premium', startDate: '01/01/2025', endDate: '01/01/2026' },
         { user: 'Jane Smith', subscriptionType: 'Standard', startDate: '02/01/2025', endDate: '02/01/2026' }
     ]);
@@ -53,104 +51,124 @@ const Dashboard = () => {
     };
 
     const handleRoleSelection = (selectedRole) => {
-        setRole(selectedRole); // Setează rolul
+        setRole(selectedRole);
     };
 
     return (
-        <Box sx={{ padding: 3, maxWidth: '1200px', margin: '0 auto' }}>
-            {/* Afișăm selectorul de rol dacă nu există un rol selectat */}
-            {!role ? (
-                <RoleSelector onLogin={handleRoleSelection} />
-            ) : (
-                <>
-                    {/* Navigare */}
-                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginBottom: 4 }}>
-                        <Button
-                            variant={showPurchased ? 'outlined' : 'contained'}
-                            sx={primaryButtonStyle}
-                            onClick={() => setShowPurchased(false)}
-                        >
-                            Cărți Disponibile
-                        </Button>
-                        <Button
-                            variant={showPurchased ? 'contained' : 'outlined'}
-                            sx={primaryButtonStyle}
-                            onClick={() => setShowPurchased(true)}
-                        >
-                            Cărțile Mele
-                        </Button>
-                    </Box>
-
-                    {/* Afișează abonamentele dacă este Admin */}
-                    {role === 'admin' && (
-                        <Box sx={{ marginBottom: 4 }}>
-                            <Typography variant="h6" sx={{ marginBottom: 2 }}>Abonamente</Typography>
-                            <Card sx={{ padding: 2, borderRadius: '12px', boxShadow: 3 }}>
-                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                    Abonamentele utilizatorilor:
-                                </Typography>
-                                {subscriptions.map((sub, index) => (
-                                    <Typography key={index} variant="body2">
-                                        {sub.user} - {sub.subscriptionType} ({sub.startDate} - {sub.endDate})
-                                    </Typography>
-                                ))}
-                            </Card>
+        <Box sx={{ minHeight: '100vh', backgroundColor: '#ffefd5', padding: 3 }}>
+            <Box sx={{ maxWidth: '1200px', margin: '0 auto' }}>
+                {!role ? (
+                    <RoleSelector onLogin={handleRoleSelection} />
+                ) : (
+                    <>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginBottom: 4 }}>
+                            <Button
+                                variant={showPurchased ? 'outlined' : 'contained'}
+                                sx={primaryButtonStyle}
+                                onClick={() => setShowPurchased(false)}
+                            >
+                                Cărți Disponibile
+                            </Button>
+                            <Button
+                                variant={showPurchased ? 'contained' : 'outlined'}
+                                sx={primaryButtonStyle}
+                                onClick={() => setShowPurchased(true)}
+                            >
+                                Cărțile Mele
+                            </Button>
+                            <Link href="/profile" passHref>
+                                <Button sx={{ ...primaryButtonStyle, marginLeft: '10px' }}>
+                                    Profilul Meu
+                                </Button>
+                            </Link>
                         </Box>
-                    )}
 
-                    {/* FILTRE */}
-                    {!showPurchased && (
-                        <Card sx={{ padding: 3, borderRadius: '12px', boxShadow: 3, marginBottom: 4 }}>
-                            <Typography variant="h6" sx={{ marginBottom: 2, color: '#2c3e50' }}>
-                                Filtrare Cărți
-                            </Typography>
-                            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
-                                <Box sx={{ flex: 1 }}>
-                                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Caută după titlu</Typography>
-                                    <TextField
-                                        placeholder="Introdu un titlu..."
-                                        variant="outlined"
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        fullWidth
-                                        size="small"
-                                    />
-                                </Box>
-
-                                <Box sx={{ flex: 1 }}>
-                                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Gen carte</Typography>
-                                    <FormControl fullWidth size="small">
-                                        <Select value={bookType} onChange={(e) => setBookType(e.target.value)} displayEmpty>
-                                            <MenuItem value="">Toate genurile</MenuItem>
-                                            <MenuItem value="ficțiune">Ficțiune</MenuItem>
-                                            <MenuItem value="non-ficțiune">Non-Ficțiune</MenuItem>
-                                            <MenuItem value="mister">Mister</MenuItem>
-                                            <MenuItem value="romantic">Romantic</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </Box>
-
-                                <Box sx={{ flex: 1 }}>
-                                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Prețul maxim (RON)</Typography>
-                                    <TextField
-                                        placeholder="Introdu prețul maxim..."
-                                        variant="outlined"
-                                        value={priceRange}
-                                        onChange={(e) => setPriceRange(e.target.value)}
-                                        fullWidth
-                                        size="small"
-                                        type="number"
-                                    />
-                                </Box>
+                        {role === 'admin' && (
+                            <Box sx={{ marginBottom: 4 }}>
+                                <Typography variant="h6" sx={{ marginBottom: 2 }}>Abonamente</Typography>
+                                <Card sx={{ padding: 2, borderRadius: '12px', boxShadow: 3 }}>
+                                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                        Abonamentele utilizatorilor:
+                                    </Typography>
+                                    {subscriptions.map((sub, index) => (
+                                        <Typography key={index} variant="body2">
+                                            {sub.user} - {sub.subscriptionType} ({sub.startDate} - {sub.endDate})
+                                        </Typography>
+                                    ))}
+                                </Card>
                             </Box>
-                        </Card>
-                    )}
+                        )}
 
-                    {/* Afișare Cărți */}
-                    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 3 }}>
-                        {showPurchased
-                            ? purchasedBooks.length > 0
-                                ? purchasedBooks.map((book) => (
+                        {!showPurchased && (
+                            <Card sx={{ padding: 3, borderRadius: '12px', boxShadow: 3, marginBottom: 4 }}>
+                                <Typography variant="h6" sx={{ marginBottom: 2, color: '#2c3e50' }}>
+                                    Filtrare Cărți
+                                </Typography>
+                                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
+                                    <Box sx={{ flex: 1 }}>
+                                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Caută după titlu</Typography>
+                                        <TextField
+                                            placeholder="Introdu un titlu..."
+                                            variant="outlined"
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            fullWidth
+                                            size="small"
+                                        />
+                                    </Box>
+
+                                    <Box sx={{ flex: 1 }}>
+                                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Gen carte</Typography>
+                                        <FormControl fullWidth size="small">
+                                            <Select value={bookType} onChange={(e) => setBookType(e.target.value)} displayEmpty>
+                                                <MenuItem value="">Toate genurile</MenuItem>
+                                                <MenuItem value="ficțiune">Ficțiune</MenuItem>
+                                                <MenuItem value="non-ficțiune">Non-Ficțiune</MenuItem>
+                                                <MenuItem value="mister">Mister</MenuItem>
+                                                <MenuItem value="romantic">Romantic</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+
+                                    <Box sx={{ flex: 1 }}>
+                                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Prețul maxim (RON)</Typography>
+                                        <TextField
+                                            placeholder="Introdu prețul maxim..."
+                                            variant="outlined"
+                                            value={priceRange}
+                                            onChange={(e) => setPriceRange(e.target.value)}
+                                            fullWidth
+                                            size="small"
+                                            type="number"
+                                        />
+                                    </Box>
+                                </Box>
+                            </Card>
+                        )}
+
+                        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 3 }}>
+                            {showPurchased
+                                ? purchasedBooks.length > 0
+                                    ? purchasedBooks.map((book) => (
+                                        <Card
+                                            key={book.title}
+                                            sx={{
+                                                padding: 2,
+                                                borderRadius: '12px',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                gap: 1,
+                                                boxShadow: 3,
+                                            }}
+                                        >
+                                            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{book.title}</Typography>
+                                            <Typography variant="body2" sx={{ color: '#7f8c8d' }}>{book.type}</Typography>
+                                            <Typography variant="body1" sx={{ color: '#27ae60', fontWeight: 'bold' }}>{book.price} RON</Typography>
+                                            <Typography variant="body2">{book.description}</Typography>
+                                        </Card>
+                                    ))
+                                    : <Typography>Nu ai cărți cumpărate încă.</Typography>
+                                : filteredBooks.map((book) => (
                                     <Card
                                         key={book.title}
                                         sx={{
@@ -166,34 +184,16 @@ const Dashboard = () => {
                                         <Typography variant="body2" sx={{ color: '#7f8c8d' }}>{book.type}</Typography>
                                         <Typography variant="body1" sx={{ color: '#27ae60', fontWeight: 'bold' }}>{book.price} RON</Typography>
                                         <Typography variant="body2">{book.description}</Typography>
+                                        <Button sx={{ ...primaryButtonStyle, marginTop: 1 }} onClick={() => handlePurchase(book)}>
+                                            Buy Now
+                                        </Button>
                                     </Card>
                                 ))
-                                : <Typography>Nu ai cărți cumpărate încă.</Typography>
-                            : filteredBooks.map((book) => (
-                                <Card
-                                    key={book.title}
-                                    sx={{
-                                        padding: 2,
-                                        borderRadius: '12px',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: 1,
-                                        boxShadow: 3,
-                                    }}
-                                >
-                                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{book.title}</Typography>
-                                    <Typography variant="body2" sx={{ color: '#7f8c8d' }}>{book.type}</Typography>
-                                    <Typography variant="body1" sx={{ color: '#27ae60', fontWeight: 'bold' }}>{book.price} RON</Typography>
-                                    <Typography variant="body2">{book.description}</Typography>
-                                    <Button sx={{ ...primaryButtonStyle, marginTop: 1 }} onClick={() => handlePurchase(book)}>
-                                        Buy Now
-                                    </Button>
-                                </Card>
-                            ))
-                        }
-                    </Box>
-                </>
-            )}
+                            }
+                        </Box>
+                    </>
+                )}
+            </Box>
         </Box>
     );
 };
